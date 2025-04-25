@@ -406,7 +406,12 @@ class HomeAdminState extends State<HomeAdmin> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Panel de Administrador'),
+        title: Text(
+          'Bienvenido $userRole - ${_auth.currentUser?.displayName ?? 'Admin'}',
+          softWrap: true,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_outlined),

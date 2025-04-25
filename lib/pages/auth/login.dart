@@ -20,6 +20,8 @@ import '../admin/home.dart';
 import '../medico/home.dart';
 import '../paciente/home.dart';
 
+String? userRole;
+
 class Authentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -91,15 +93,14 @@ Future<Widget> redirectUser(User user) async {
   // Forzamos refetch de token para obtener claims actualizados
   final idToken = await user.getIdTokenResult(true);
   final claims = idToken.claims ?? {};
-  String role = (claims['role'] as String?)?.toLowerCase() ?? 'paciente';
-  role = (claims['superadmin'] == true) ? 'superadmin' : role;
-  role = (claims['doctor'] == true) ? 'doctor' : role;
-  role = (claims['admin'] == true) ? 'admin' : role;
-  role = (claims['paciente'] == true) ? 'paciente' : role;
-  print(['claims', role, idToken.claims]); // Debugging role
+  userRole = (claims['role'] as String?)?.toLowerCase() ?? 'paciente';
+  userRole = (claims['superadmin'] == true) ? 'superadmin' : userRole;
+  userRole = (claims['doctor'] == true) ? 'doctor' : userRole;
+  userRole = (claims['admin'] == true) ? 'admin' : userRole;
+  userRole = (claims['paciente'] == true) ? 'paciente' : userRole;
+  print(['claims', userRole, idToken.claims]); // Debugging userRole
 
-  Widget homeScreen;
-  switch (role) {
+  switch (userRole) {
     case 'superadmin':
     case 'admin':
       return const HomeAdmin();
@@ -185,6 +186,9 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                             if (cred?.user != null) {
                               Navigator.of(ctx).pop();
                               await redirectUser(cred!.user!).then((value) {
+                                setState(() {
+                                  userRole = userRole;
+                                });
                                 // Aquí puedes manejar la navegación después de iniciar sesión
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
@@ -234,6 +238,8 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     final textTheme = createTextTheme(context, "Montserrat", "Atkinson Hyperlegible");
     final theme = MaterialTheme(textTheme);
     const btnWidth = 320.0;
+    // Determinar brillo para tema claro/oscuro
+    final brightness = WidgetsBinding.instance.window.platformBrightness;
 
     Future<void> emailLogin() async {
       final cred = await _auth.signInWithEmailAndPassword(
@@ -242,6 +248,9 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       );
       if (cred?.user != null) {
         await redirectUser(cred!.user!).then((value) {
+          setState(() {
+            userRole = userRole;
+          });
           // Aquí puedes manejar la navegación después de iniciar sesión
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
@@ -260,6 +269,9 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       final cred = await _auth.signInWithGoogle();
       if (cred?.user != null) {
         await redirectUser(cred!.user!).then((value) {
+          setState(() {
+            userRole = userRole;
+          });
           // Aquí puedes manejar la navegación después de iniciar sesión
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
@@ -277,7 +289,14 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     final botones = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text('Inicia sesión', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        Text(
+          'Inicia sesión',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: brightness == Brightness.light ? Colors.black : Colors.white,
+          ),
+        ),
         const SizedBox(height: 20),
         TextField(
           controller: _emailController,
@@ -293,10 +312,17 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         SizedBox(
           width: btnWidth,
           child: ElevatedButton.icon(
-            icon: Icon(Icons.mail, size: 24, color: theme.light().colorScheme.onPrimary),
+            icon: Icon(
+              Icons.mail,
+              size: 24,
+              color: brightness == Brightness.light ? Colors.black : Colors.white,
+            ),
             label: Text(
               'Iniciar sesión',
-              style: TextStyle(fontSize: 18, color: theme.light().colorScheme.onPrimary),
+              style: TextStyle(
+                fontSize: 18,
+                color: brightness == Brightness.light ? Colors.black : Colors.white,
+              ),
             ),
             onPressed: emailLogin,
           ),
@@ -326,15 +352,25 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         SizedBox(
           width: btnWidth,
           child: ElevatedButton.icon(
-            icon: Icon(Icons.phone, size: 24, color: theme.light().colorScheme.onPrimary),
-            label: const Text('Iniciar con teléfono'),
+            icon: Icon(
+              Icons.phone,
+              size: 24,
+              color: brightness == Brightness.light ? Colors.black : Colors.white,
+            ),
+            label: Text(
+              'Iniciar con teléfono',
+              style: TextStyle(color: brightness == Brightness.light ? Colors.black : Colors.white),
+            ),
             onPressed: _showPhoneAuthDialog,
           ),
         ),
       ],
     );
 
-    return Scaffold(body: LoginAdaptativo(imagen: imagen, botones: botones));
+    return MaterialApp(
+      theme: brightness == Brightness.light ? theme.light() : theme.dark(),
+      home: Scaffold(body: LoginAdaptativo(imagen: imagen, botones: botones)),
+    );
   }
 }
 

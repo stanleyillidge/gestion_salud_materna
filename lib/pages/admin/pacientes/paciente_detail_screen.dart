@@ -514,7 +514,7 @@ class _PacienteDetailScreenState extends State<PacienteDetailScreen>
         bottom: TabBar(
           controller: _tabController,
           tabs: tabsToShow, // Usa la lista de tabs calculada
-          isScrollable: tabsToShow.length > 4, // Hacer scrollable si hay muchas tabs
+          // isScrollable: tabsToShow.length > 4, // Hacer scrollable si hay muchas tabs
         ),
         actions: [
           // Mostrar botones de admin solo si isAdminView es true
@@ -654,67 +654,6 @@ class _PacienteDetailScreenState extends State<PacienteDetailScreen>
     );
   }
 
-  /* Widget _buildAIConsultationsTabContainer(String pacienteId) {
-    return Column(
-      children: [
-        // --- Botón para cambiar layout ---
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              icon: Icon(
-                _currentAILayout == _AILayout.card ? Icons.view_list : Icons.view_module,
-                semanticLabel: 'Cambiar Vista',
-              ),
-              tooltip: 'Cambiar Vista',
-              onPressed: () {
-                setState(() {
-                  _currentAILayout =
-                      _currentAILayout == _AILayout.card ? _AILayout.listDetail : _AILayout.card;
-                  _selectedConsultaIA = null; // Resetea selección al cambiar vista
-                });
-              },
-            ),
-          ),
-        ),
-        // --- Contenido principal (StreamBuilder) ---
-        Expanded(
-          child: StreamBuilder<QuerySnapshot>(
-            stream: _firestoreService.getAIConsultationsStream(pacienteId),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (snapshot.hasError) {
-                return Center(child: Text('Error al cargar historial IA: ${snapshot.error}'));
-              }
-              final consultas =
-                  snapshot.data?.docs
-                      .map(
-                        (doc) =>
-                            ConsultaIA.fromFirestore(doc as DocumentSnapshot<Map<String, dynamic>>),
-                      )
-                      .toList() ??
-                  [];
-
-              if (consultas.isEmpty) {
-                return const Center(child: Text('No hay consultas de IA registradas.'));
-              }
-
-              // Renderiza el layout actual
-              if (_currentAILayout == _AILayout.card) {
-                return _buildCardLayout(consultas);
-              } else {
-                return _buildListDetailLayout(consultas);
-              }
-            },
-          ),
-        ),
-      ],
-    );
-  } */
-
   // --- NUEVO: Layout de Tarjetas con Wrap ---
   Widget _buildWrapLayout(List<ConsultaIA> consultas) {
     // Mapea las consultas a los widgets de tarjeta con ancho limitado
@@ -728,7 +667,12 @@ class _PacienteDetailScreenState extends State<PacienteDetailScreen>
 
     // Usa SingleChildScrollView por si el Wrap excede la altura
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0), // Espacio alrededor del contenido del Wrap
+      padding: const EdgeInsets.only(
+        top: 8,
+        left: 16.0,
+        right: 16.0,
+        bottom: 120.0,
+      ), // Espacio alrededor del contenido del Wrap
       child: Wrap(
         spacing: 12.0, // Espacio horizontal entre tarjetas
         runSpacing: 12.0, // Espacio vertical entre filas de tarjetas

@@ -1,1 +1,37 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"salud-materna-eda0e","appId":"1:877846277125:android:40c5e63229db0b1bf8406c","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"salud-materna-eda0e","configurations":{"android":"1:877846277125:android:40c5e63229db0b1bf8406c","web":"1:877846277125:web:5508b2c6525759d1f8406c","windows":"1:877846277125:web:5508b2c6525759d1f8406c"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "salud-materna-eda0e",
+          "appId": "1:877846277125:android:40c5e63229db0b1bf8406c",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "salud-materna-eda0e",
+          "configurations": {
+            "android": "1:877846277125:android:40c5e63229db0b1bf8406c",
+            "web": "1:877846277125:web:5508b2c6525759d1f8406c",
+            "windows": "1:877846277125:web:5508b2c6525759d1f8406c"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

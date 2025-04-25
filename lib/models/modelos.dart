@@ -9,6 +9,8 @@ late Size size;
 MediaQueryData? mediaQueryData;
 TextScaler? scale;
 
+enum UserViewType { list, grid }
+
 bool login = false;
 bool smallView = false;
 bool mediumView = false;

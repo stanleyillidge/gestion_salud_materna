@@ -1,0 +1,196 @@
+{
+    // Use IntelliSense para saber los atributos posibles.
+    // Mantenga el puntero para ver las descripciones de los existentes atributos.
+    // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "gestion_salud_materna",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "gestion_salud_materna (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "gestion_salud_materna (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "motoG72",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": ["--web-port", "5050"],
+            "deviceId": "moto g72"
+        },
+        {
+            "name": "Chrome",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "chrome",
+            "args": ["--web-port", "5050"]
+        },
+        {
+            "name": "Android1",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": ["--web-port", "5050"],
+            "deviceId": "emulator-5559"
+        },
+        {
+            "name": "Android2",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": ["--web-port", "5050"],
+            "deviceId": "emulator-5558"
+        },
+        {
+            "name": "Android3",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": ["--web-port", "5050"],
+            "deviceId": "emulator-5560"
+        },
+        {
+            "name": "Android4",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": ["--web-port", "5050"],
+            "deviceId": "emulator-5554"
+        },
+        {
+            "name": "Tablet1",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": ["--web-port", "5050"],
+            "deviceId": "Lenovo TB X306X"
+        },
+        {
+            "name": "Tablet2",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": ["--web-port", "5050"],
+            "deviceId": "emulator-5556"
+        },
+        {
+            "name": "Android1e",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "emulator-5559",
+            "toolArgs": [
+                "--dart-define",
+                "USE_FIREBASE_EMU=true",
+            ]
+        },
+        {
+            "name": "Android2e",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "emulator-5558",
+            "toolArgs": [
+                "--dart-define",
+                "USE_FIREBASE_EMU=true",
+            ]
+        },
+        {
+            "name": "Android3e",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "emulator-5560",
+            "toolArgs": [
+                "--dart-define",
+                "USE_FIREBASE_EMU=true",
+            ]
+        },
+        {
+            "name": "Android4e",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "emulator-5556",
+            "toolArgs": [
+                "--dart-define",
+                "USE_FIREBASE_EMU=true",
+            ]
+        },
+        {
+            "name": "Tablet1e",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "Lenovo TB X306X",
+            "toolArgs": [
+                "--dart-define",
+                "USE_FIREBASE_EMU=true",
+            ]
+        },
+        {
+            "name": "Tablet2e",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "emulator-5554",
+            "toolArgs": [
+                "--dart-define",
+                "USE_FIREBASE_EMU=true",
+            ]
+        },
+        {
+            "name": "LOCAL EMULATOR",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "toolArgs": [
+                "--dart-define",
+                "USE_FIREBASE_EMU=true",
+            ]
+        },
+        {
+            "name": "LOCAL DEVICE",
+            "cwd": "flutter_with_firebase_emulators",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": ["--web-port", "5050"],
+            "toolArgs": [
+                "--dart-define",
+                "USE_FIREBASE_EMU=true",
+                "--dart-define",
+                "FIREBASE_EMU_URL=192.168.1.2",
+            ]
+        },
+    ],
+    "compounds": [
+        {
+            "name": "All Devices",
+            "configurations": ["motoG72","Tablet1","Tablet2","Android1","Android2","Android3","Android4"],
+            // "configurations": ["Android1","Android2","Tablet2"],
+        },
+        {
+            "name": "All Devices EMULATOR",
+            "configurations": ["Android1e","Android2e","Android3e","Android4e","Tablet2e"],
+            // "configurations": ["Android1","Android2","Tablet2"],
+        },
+        {
+            "name": "All Devices web",
+            "configurations": ["Chrome","Tablet1","Tablet2","Android1","Android2","Android3"],
+            // "configurations": ["Android1","Android2","Tablet2"],
+        }
+    ]
+}
