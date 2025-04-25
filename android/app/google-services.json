@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "877846277125",
+    "project_id": "salud-materna-eda0e",
+    "storage_bucket": "salud-materna-eda0e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877846277125:android:40c5e63229db0b1bf8406c",
+        "android_client_info": {
+          "package_name": "saeji.dev.gestion_salud_materna"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877846277125-vtt06cu1ov80f71s3f6a3ckr9d23mq83.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "saeji.dev.gestion_salud_materna",
+            "certificate_hash": "efee56a53a432c1b1e6de9ec9fde96ea7e27692b"
+          }
+        },
+        {
+          "client_id": "877846277125-v6l75tldlbglcqr85me2r04qrj9l9odi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMsHO5XsF2dsYPni7q8hosLRGC3KeJX4Y"
+        },
+        {
+          "current_key": "AIzaSyDHMZkjMCUxP2lXCuHiQLC4Nkvp4CjNXl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877846277125-v6l75tldlbglcqr85me2r04qrj9l9odi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877846277125:android:f23225d3700b3271f8406c",
+        "android_client_info": {
+          "package_name": "saeji.dev.salud_materna"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877846277125-fggiuu8i2n4kmqovlshf52f1ks2sgf3r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "saeji.dev.salud_materna",
+            "certificate_hash": "efee56a53a432c1b1e6de9ec9fde96ea7e27692b"
+          }
+        },
+        {
+          "client_id": "877846277125-v6l75tldlbglcqr85me2r04qrj9l9odi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMsHO5XsF2dsYPni7q8hosLRGC3KeJX4Y"
+        },
+        {
+          "current_key": "AIzaSyDHMZkjMCUxP2lXCuHiQLC4Nkvp4CjNXl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877846277125-v6l75tldlbglcqr85me2r04qrj9l9odi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

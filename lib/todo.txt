@@ -1,0 +1,119 @@
+priorizar los datos de la historia clinica para incluir primero y de forma obligatoria los que necesita el modelo de IA y luego el resto
+
+MBI_AE1 + MBI_AE2 + MBI_AE3 + MBI_AE4 + MBI_AE5 + MBI_AE6 + MBI_AE7 + MBI_AE8 + MBI_AE9
+MBI_DP1 + MBI_DP2 + MBI_DP3 + MBI_DP4 + MBI_DP5
+MBI_RP1 + MBI_RP2 + MBI_RP3 + MBI_RP4 + MBI_RP5 + MBI_RP6 + MBI_RP7 + MBI_RP8
+HADS_D1 + HADS_D2 + HADS_D3 + HADS_D4 + HADS_D5 + HADS_D6 + HADS_D7
+COPE1 + COPE2 + COPE3 + COPE4 + COPE5 + COPE6 + COPE7 + COPE8 + COPE9 + COPE10 + COPE11 + COPE12 + COPE13 + COPE14 + COPE15 + COPE16 + COPE17 + COPE18 + COPE19 + COPE20 + COPE21 + COPE22 + COPE23 + COPE24 + COPE25 + COPE26 + COPE27 + COPE28
+
+COPE_AfrontamientoActivo
+COPE10 + COPE2
+
+COPE_Planificacion
+COPE26 + COPE6
+
+COPE_ApoyoSocialEmocional
+COPE17 + COPE9
+
+COPE_ApoyoSocialInstrumental
+COPE28 + COPE1
+
+COPE_Religion
+COPE20 + COPE16
+
+COPE_ReinterpretacionPositiva
+COPE18 + COPE14
+
+COPE_Aceptacion
+COPE21 + COPE3
+
+COPE_Negacion
+COPE13 + COPE5
+
+COPE_Humor
+COPE19 + COPE7
+
+COPE_Autodistraccion
+COPE22 + COPE4
+
+COPE_Autoinculpacion
+COPE27 + COPE8
+
+COPE_DesconexionConductual
+COPE25 + COPE11
+
+COPE_DesahogoEmocional
+COPE23 + COPE12
+
+COPE_UsoDeSustancias
+COPE24 + COPE15
+//----------------------------
+COPE_Autodistraccion
+COPE1 + COPE20 + COPE26
+
+COPE_AfrontamientoActivo
+COPE2 + COPE7 + COPE27
+
+COPE_Negacion
+COPE3 + COPE8
+
+COPE_UsoSustancias
+COPE4 + COPE11
+
+COPE_ApoyoEmocional
+COPE5
+
+COPE_DesconexionConductual
+COPE6 + COPE25
+
+COPE_Desahogo
+COPE9 + COPE14
+
+COPE_ApoyoInstrumental
+COPE10 + COPE23
+
+COPE_ReformulacionPositiva
+COPE12 + COPE18
+
+COPE_Autoculpa
+COPE21 + COPE24
+
+COPE_Planificacion
+COPE17 + COPE23
+
+COPE_Humor
+COPE19
+
+COPE_Aceptacion
+COPE13 + COPE16
+
+COPE_Religion
+COPE15 + COPE22 + COPE28
+//-------------------------------
+
+EMIEOCEW_MetodosPedagogicos
+EMIEOCEW_MetodosPedagogicos1+EMIEOCEW_MetodosPedagogicos2+EMIEOCEW_MetodosPedagogicos3+EMIEOCEW_MetodosPedagogicos4+EMIEOCEW_MetodosPedagogicos5+EMIEOCEW_MetodosPedagogicos6
+
+EMIEOCEW_FormacionDocente
+EMIEOCEW_FormacionDocente1+EMIEOCEW_FormacionDocente2+EMIEOCEW_FormacionDocente3+EMIEOCEW_FormacionDocente4+EMIEOCEW_FormacionDocente5
+
+EMIEOCEW_RecursosMateriales
+EMIEOCEW_RecursosMateriales1+EMIEOCEW_RecursosMateriales2+EMIEOCEW_RecursosMateriales3+EMIEOCEW_RecursosMateriales4+EMIEOCEW_RecursosMateriales5
+
+EMIEOCEW_PoliticaInstitucional
+EMIEOCEW_PoliticaInstitucional1+EMIEOCEW_PoliticaInstitucional2+EMIEOCEW_PoliticaInstitucional3+EMIEOCEW_PoliticaInstitucional4+EMIEOCEW_PoliticaInstitucional5
+
+PCW_Lengua
+PCW_Lengua1+PCW_Lengua2+PCW_Lengua3+PCW_Lengua4+PCW_Lengua5
+
+PCW_TradicionesRitos
+PCW_TradicionesRitos1+PCW_TradicionesRitos2+PCW_TradicionesRitos3+PCW_TradicionesRitos4+PCW_TradicionesRitos5
+
+PCW_ConocimientosAncestrales
+PCW_ConocimientosAncestrales1+PCW_ConocimientosAncestrales2+PCW_ConocimientosAncestrales3+PCW_ConocimientosAncestrales4+PCW_ConocimientosAncestrales5
+
+PCW_ValoresIdentidad
+PCW_ValoresIdentidad1+PCW_ValoresIdentidad2+PCW_ValoresIdentidad3+PCW_ValoresIdentidad4+PCW_ValoresIdentidad5
+
+PCW_PracticasCotidianas
+PCW_PracticasCotidianas1+PCW_PracticasCotidianas2+PCW_PracticasCotidianas3+PCW_PracticasCotidianas4+PCW_PracticasCotidianas5

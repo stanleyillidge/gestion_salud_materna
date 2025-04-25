@@ -1,0 +1,10 @@
+{
+    "scripts": {
+        "dart2pdf": "node -e \"require('./dart-to-pdf').convertDartFilesToPdf()\""
+    },
+    "dependencies": {
+        "@google/genai": "^0.9.0",
+        "glob": "^11.0.1",
+        "pdfkit": "^0.17.0"
+    }
+}
