@@ -1,11 +1,14 @@
 // pages/admin/pacientes/paciente_management_tab.dart
 // ignore_for_file: use_build_context_synchronously, must_be_immutable
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // import '../../../models/modelos.dart'; // Asegúrate que la ruta sea correcta
 import '../../../models/modelos.dart';
 import '../../../services/firestore_service.dart'; // Asegúrate que la ruta sea correcta
+import '../../../services/users_service.dart';
+import 'create_user_form.dart';
 import 'paciente_detail_screen.dart';
 
 class PacienteManagementTab extends StatefulWidget {
@@ -25,6 +28,7 @@ class PacienteManagementTab extends StatefulWidget {
 
 class _PacienteManagementTabState extends State<PacienteManagementTab> {
   final FirestoreService _firestoreService = FirestoreService();
+  final UsersService _userService = UsersService(); // Asegúrate de tener este servicio
 
   List<Usuario> _filterUsers(List<Usuario> allUsers, String? searchTerm) {
     // ... (código de filtro sin cambios) ...
@@ -130,7 +134,7 @@ class _PacienteManagementTabState extends State<PacienteManagementTab> {
         title: Text(user.displayName),
         subtitle: Text("Email: ${user.email}"),
         // isThreeLine: true,
-        trailing: Row(
+        /* trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
@@ -151,6 +155,53 @@ class _PacienteManagementTabState extends State<PacienteManagementTab> {
               onPressed: () => _confirmDeletepaciente(context, user),
             ),
           ],
+        ), */
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // --- NUEVO: Botón Editar ---
+            IconButton(
+              icon: const Icon(Icons.edit_outlined, color: Colors.orange), // Icono de editar
+              tooltip: 'Editar Usuario',
+              onPressed: () {
+                // Navegar a CreateUserScreen pasando los datos del usuario
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => CreateUserScreen(initialData: user), // Pasa el 'user' actual
+                  ),
+                );
+              },
+            ),
+            // --- FIN NUEVO ---
+            IconButton(
+              icon: Icon(
+                Icons.delete,
+                // Deshabilitar si es el usuario actual (solo aplica a admin/doctor tab)
+                color:
+                    (user.uid == FirebaseAuth.instance.currentUser?.uid &&
+                            (user.roles.contains(UserRole.admin) ||
+                                user.roles.contains(UserRole.doctor)))
+                        ? Colors.grey
+                        : Colors.red,
+              ),
+              tooltip:
+                  (user.uid == FirebaseAuth.instance.currentUser?.uid &&
+                          (user.roles.contains(UserRole.admin) ||
+                              user.roles.contains(UserRole.doctor)))
+                      ? 'No puedes eliminarte'
+                      : 'Eliminar Usuario',
+              onPressed:
+                  (user.uid == FirebaseAuth.instance.currentUser?.uid &&
+                          (user.roles.contains(UserRole.admin) ||
+                              user.roles.contains(UserRole.doctor)))
+                      ? null // Deshabilitar si es el usuario actual
+                      : () => _confirmDeleteUser(
+                        context,
+                        user,
+                      ), // Llama a la función de borrado correcta
+            ),
+          ],
         ),
         onTap: () {
           Navigator.push(
@@ -161,6 +212,53 @@ class _PacienteManagementTabState extends State<PacienteManagementTab> {
           );
         },
       ),
+    );
+  }
+
+  // --- Función de borrado (renombrada para claridad) ---
+  // void _confirmDeletepaciente(BuildContext context, Usuario user) { // <--- Nombre anterior
+  void _confirmDeleteUser(BuildContext context, Usuario user) {
+    // <--- Nuevo nombre genérico
+    String userTypeDisplay =
+        user.roles.isNotEmpty ? user.roles.first.name : 'usuario'; // Nombre para mostrar
+    showDialog(
+      context: context,
+      builder:
+          (ctx) => AlertDialog(
+            title: const Text('Confirmar Eliminación'),
+            content: Text(
+              '¿Estás seguro de que quieres eliminar al $userTypeDisplay ${user.displayName}? Esta acción NO se puede deshacer y eliminará su cuenta y datos asociados.',
+            ),
+            actions: <Widget>[
+              TextButton(child: const Text('Cancelar'), onPressed: () => Navigator.of(ctx).pop()),
+              TextButton(
+                child: const Text('Eliminar', style: TextStyle(color: Colors.red)),
+                onPressed: () async {
+                  Navigator.of(ctx).pop();
+                  try {
+                    // Usa el método deleteUserAndProfile del servicio actualizado
+                    await _userService.deleteUserAndProfile(
+                      user.uid,
+                      user.roles.first.name,
+                    ); // Pasa el tipo como string
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('$userTypeDisplay eliminado correctamente'),
+                        backgroundColor: Colors.orange,
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Error al eliminar: ${e.toString()}'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
     );
   }
 

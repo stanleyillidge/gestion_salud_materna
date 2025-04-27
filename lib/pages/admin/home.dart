@@ -14,7 +14,7 @@ import '../../services/users_service.dart'; // *** NUEVO: Importa UsersService *
 import '../auth/login.dart';
 import 'dashboard.dart'; // *** CORREGIDO: Importa Dashboard ***
 import 'doctores/doctor_management_screen.dart';
-import 'gestion_users.dart';
+import 'pacientes/gestion_users.dart';
 import 'notificaciones.dart';
 import 'pacientes/pacientes.dart';
 
@@ -429,7 +429,7 @@ class HomeAdminState extends State<HomeAdmin> {
                     ? const SizedBox(
                       width: 20,
                       height: 20,
-                      child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                      child: CircularProgressIndicator(strokeWidth: 2),
                     )
                     : const Icon(Icons.upload_file),
             tooltip: 'Cargar Datos de Prueba',

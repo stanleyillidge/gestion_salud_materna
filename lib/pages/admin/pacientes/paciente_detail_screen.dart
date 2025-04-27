@@ -10,6 +10,7 @@ import '../../../models/modelos.dart';
 import '../../../services/firestore_service.dart';
 import '../../../services/vertex_service.dart'; // Asume que este servicio ahora existe
 // Importa las vistas y formularios necesarios
+import 'create_user_form.dart';
 import 'historia clinica/gestion_historia_clinica_view.dart';
 import 'historia clinica/gestion_historia_clinica_form.dart';
 import 'recomendaciones_screen.dart'; // Asegúrate que esta pantalla exista
@@ -381,13 +382,40 @@ class _PacienteDetailScreenState extends State<PacienteDetailScreen>
   }
 
   /// Navega a la pantalla de edición del paciente (solo Admin).
+  // --- FUNCIÓN MODIFICADA ---
+  /// Navega a la pantalla de edición del paciente (solo Admin).
   void _navigateToEdit() {
-    if (!widget.isAdminView || _pacienteData == null) return;
-    // TODO: Implementar navegación a una pantalla de edición general del usuario (si existe)
-    // Por ejemplo, podría reutilizar CreateUserScreen pasándole los datos existentes.
-    ScaffoldMessenger.of(
+    // 1. Verificar permisos y datos
+    if (!widget.isAdminView || _pacienteData == null) {
+      print("Error: Intento de editar sin permisos o sin datos del paciente.");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No se puede editar en este momento.'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    // 2. Navegar a CreateUserScreen pasando los datos iniciales
+    Navigator.push(
       context,
-    ).showSnackBar(const SnackBar(content: Text('Funcionalidad Editar Paciente no implementada')));
+      MaterialPageRoute(
+        builder:
+            (_) => CreateUserScreen(
+              initialData: _pacienteData!, // Pasa el objeto Usuario completo
+            ),
+      ),
+    ).then((_) {
+      // Opcional: Recargar datos si es necesario después de volver de la edición.
+      // Como usamos un StreamBuilder para _pacienteData, debería actualizarse
+      // automáticamente si el servicio de actualización modifica el documento en Firestore.
+      // Si no se actualiza, podrías forzar un refetch aquí:
+      // _fetchPacienteDetails(); // Descomenta si la actualización no es automática
+    });
+
+    // Ya no mostramos el SnackBar de "no implementado"
+    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Funcionalidad Editar Paciente no implementada')));
   }
 
   /// Confirmación y eliminación del paciente (solo Admin).
@@ -796,9 +824,6 @@ class _PacienteDetailScreenState extends State<PacienteDetailScreen>
     );
   }
 
-  // --- Métodos _buildConsultaCard y _showRawResponseDialog sin cambios ---
-  // ... (pega aquí los métodos _buildConsultaCard y _showRawResponseDialog
-  //      que ya tenías en PacienteDetailScreen) ...
   // Helper para construir la tarjeta de una consulta IA
   Widget _buildConsultaCard(ConsultaIA consulta) {
     final formatter = DateFormat('EEEE dd MMMM, hh:mm a', 'es');
@@ -933,64 +958,196 @@ class _PacienteDetailScreenState extends State<PacienteDetailScreen>
     );
   }
 
-  // --- El resto de los métodos (_buildGeneralInfoTab, _buildClinicalHistoryTab, _buildRecomendacionesTab, _buildInfoRow, etc.) sin cambios ---
-  // ... (pega aquí el resto de los métodos build de las otras tabs y los helpers) ...
-
   Widget _buildGeneralInfoTab(Usuario user) {
     final profile = user.pacienteProfile; // Accede al perfil específico
     final DateFormat formatter = DateFormat('dd MMMM yyyy', 'es_ES');
 
-    // Lista de widgets a mostrar en esta pestaña
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        // Información básica del Usuario (común)
-        _buildInfoRow('Nombre Completo:', user.displayName),
-        _buildInfoRow('Email:', user.email),
-        _buildInfoRow('ID Usuario:', user.uid),
-        const Divider(height: 20, thickness: 1),
+    // --- Lista de todos los items a mostrar ---
+    // Creamos una lista de mapas para facilitar el mapeo en el builder
+    final List<Map<String, dynamic>> infoItems = [
+      // Información básica del Usuario
+      {'label': 'Nombre Completo:', 'value': user.displayName},
+      {'label': 'Email:', 'value': user.email},
+      {'label': 'ID Usuario:', 'value': user.uid},
 
-        // Información específica del PacienteProfile
-        Text("Datos del Perfil de Paciente", style: Theme.of(context).textTheme.titleMedium),
-        _buildInfoRow(
-          'Fec. Nacimiento:',
-          profile?.fechaNacimiento != null ? formatter.format(profile!.fechaNacimiento!) : null,
-        ),
-        _buildInfoRow('Nacionalidad:', profile?.nacionalidad),
-        _buildInfoRow('Doc. Identidad:', profile?.documentoIdentidad),
-        _buildInfoRow('Dirección:', profile?.direccion),
-        _buildInfoRow('Teléfono Contacto:', profile?.telefono),
-        _buildInfoRow('Grupo Sanguíneo:', profile?.grupoSanguineo),
-        _buildInfoRow('Factor RH:', profile?.factorRH),
-        _buildInfoRow('Alergias:', profile?.alergias?.join(', ')),
-        _buildInfoRow('Enf. Preexistentes:', profile?.enfermedadesPreexistentes?.join(', ')),
-        _buildInfoRow('Medicamentos Actuales:', profile?.medicamentos?.join(', ')),
-        const Divider(height: 20, thickness: 1),
+      // Separador Lógico (no es un widget real aquí)
+      {'type': 'divider', 'title': 'Datos del Perfil de Paciente'},
 
-        // Datos Obstétricos del PacienteProfile
-        Text("Datos Obstétricos", style: Theme.of(context).textTheme.titleMedium),
-        _buildInfoRow(
-          'FUM:',
-          profile?.fechaUltimaMenstruacion != null
-              ? formatter.format(profile!.fechaUltimaMenstruacion!)
-              : null,
-        ),
-        _buildInfoRow('Semanas Gestación:', profile?.semanasGestacion?.toString()),
-        _buildInfoRow(
-          'FPP:',
-          profile?.fechaProbableParto != null
-              ? formatter.format(profile!.fechaProbableParto!)
-              : null,
-        ),
-        _buildInfoRow('Nº Gestaciones:', profile?.numeroGestaciones?.toString()),
-        _buildInfoRow('Nº Partos Vaginales:', profile?.numeroPartosVaginales?.toString()),
-        _buildInfoRow('Nº Cesáreas:', profile?.numeroCesareas?.toString()),
-        _buildInfoRow('Nº Abortos:', profile?.abortos?.toString()),
-        _buildInfoRow('Embarazo Múltiple:', profile?.embarazoMultiple),
-        // Solo muestra doctor asignado si es admin view
-        if (widget.runtimeType == PacienteDetailScreen && (widget).isAdminView)
-          _buildInfoRow('Doctor Asignado ID:', profile?.doctorId ?? 'Ninguno'),
-      ],
+      // Información específica del PacienteProfile
+      {
+        'label': 'Fec. Nacimiento:',
+        'value':
+            profile?.fechaNacimiento != null ? formatter.format(profile!.fechaNacimiento!) : null,
+      },
+      {'label': 'Nacionalidad:', 'value': profile?.nacionalidad},
+      {'label': 'Doc. Identidad:', 'value': profile?.documentoIdentidad},
+      {'label': 'Dirección:', 'value': profile?.direccion},
+      {'label': 'Teléfono Contacto:', 'value': profile?.telefono},
+      {'label': 'Grupo Sanguíneo:', 'value': profile?.grupoSanguineo},
+      {'label': 'Factor RH:', 'value': profile?.factorRH},
+      {'label': 'Alergias:', 'value': profile?.alergias?.join(', ')},
+      {'label': 'Enf. Preexistentes:', 'value': profile?.enfermedadesPreexistentes?.join(', ')},
+      {'label': 'Medicamentos Actuales:', 'value': profile?.medicamentos?.join(', ')},
+
+      // Separador Lógico
+      {'type': 'divider', 'title': 'Datos Obstétricos'},
+
+      // Datos Obstétricos del PacienteProfile
+      {
+        'label': 'FUM:',
+        'value':
+            profile?.fechaUltimaMenstruacion != null
+                ? formatter.format(profile!.fechaUltimaMenstruacion!)
+                : null,
+      },
+      {'label': 'Semanas Gestación:', 'value': profile?.semanasGestacion?.toString()},
+      {
+        'label': 'FPP:',
+        'value':
+            profile?.fechaProbableParto != null
+                ? formatter.format(profile!.fechaProbableParto!)
+                : null,
+      },
+      {'label': 'Nº Gestaciones:', 'value': profile?.numeroGestaciones?.toString()},
+      {'label': 'Nº Partos Vaginales:', 'value': profile?.numeroPartosVaginales?.toString()},
+      {'label': 'Nº Cesáreas:', 'value': profile?.numeroCesareas?.toString()},
+      {'label': 'Nº Abortos:', 'value': profile?.abortos?.toString()},
+      {'label': 'Embarazo Múltiple:', 'value': profile?.embarazoMultiple},
+
+      // Solo muestra doctor asignado si es admin view (asumiendo que estás en PacienteDetailScreen)
+      if (widget.runtimeType == PacienteDetailScreen && (widget).isAdminView)
+        {'label': 'Doctor Asignado ID:', 'value': profile?.doctorId ?? 'Ninguno'},
+    ];
+
+    // --- Usar LayoutBuilder para decidir el diseño ---
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Define un breakpoint, por ejemplo 600 o 720 pixels
+        const double breakpoint = 720.0;
+        final bool useWideLayout = constraints.maxWidth >= breakpoint;
+
+        if (useWideLayout) {
+          // --- Diseño Ancho (Wrap) ---
+          const double itemWidth = 380.0; // Ancho deseado para cada par Label/Value
+          const double wrapSpacing = 16.0;
+
+          List<Widget> wrappedItems = [];
+          String? currentSectionTitle;
+
+          for (var item in infoItems) {
+            if (item['type'] == 'divider') {
+              // Añadir espacio y título de sección si existe uno anterior
+              if (currentSectionTitle != null) {
+                wrappedItems.add(
+                  const SizedBox(height: 20, width: double.infinity),
+                ); // Espacio antes de la nueva sección
+              }
+              currentSectionTitle = item['title'];
+              wrappedItems.add(
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 5.0),
+                  child: Text(
+                    currentSectionTitle ?? '',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.primary),
+                  ),
+                ),
+              );
+              wrappedItems.add(const Divider(height: 1, thickness: 1, endIndent: 20, indent: 0));
+              wrappedItems.add(const SizedBox(height: 10, width: double.infinity));
+            } else if (item['label'] != null) {
+              // Solo añade el item si tiene un label (ignora separadores vacíos)
+              wrappedItems.add(
+                SizedBox(
+                  width: itemWidth, // Dar un ancho al SizedBox para que Wrap funcione bien
+                  child: _buildInfoRow(item['label'], item['value']), // Reutiliza tu helper
+                ),
+              );
+            }
+          }
+
+          return SingleChildScrollView(
+            // Para permitir scroll si el contenido es muy alto
+            padding: const EdgeInsets.all(24.0), // Más padding en pantallas anchas
+            child: Wrap(
+              spacing: wrapSpacing, // Espacio horizontal entre items
+              runSpacing: wrapSpacing / 2, // Espacio vertical entre filas
+              alignment: WrapAlignment.start, // Alinear al inicio
+              children: wrappedItems,
+            ),
+          );
+        } else {
+          // --- Diseño Estrecho (ListView) ---
+          return ListView.separated(
+            padding: const EdgeInsets.all(16.0),
+            itemCount: infoItems.length,
+            itemBuilder: (context, index) {
+              final item = infoItems[index];
+              if (item['type'] == 'divider') {
+                // Muestra el título de la sección si existe
+                if (item['title'] != null) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 5.0),
+                    child: Text(
+                      item['title'],
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  );
+                } else {
+                  return const SizedBox.shrink(); // No mostrar nada si no hay título
+                }
+              }
+              // Muestra la fila de información normal
+              return _buildInfoRow(item['label'], item['value']);
+            },
+            separatorBuilder: (context, index) {
+              final item = infoItems[index];
+              // Añade un Divider después de un título de sección
+              if (item['type'] == 'divider' && item['title'] != null) {
+                return const Divider(height: 10, thickness: 1);
+              }
+              return const SizedBox(height: 0); // Sin separador entre rows normales
+            },
+          );
+        }
+      },
+    );
+  }
+
+  // --- Helper _buildInfoRow (sin cambios, asegúrate que esté definido) ---
+  Widget _buildInfoRow(String label, dynamic value) {
+    String text;
+    if (value == null || (value is String && value.isEmpty)) {
+      text = 'No especificado';
+    } else if (value is bool) {
+      text = value ? 'Sí' : 'No';
+    } else if (value is DateTime) {
+      text = DateFormat('dd MMM yyyy', 'es_ES').format(value);
+    } else if (value is Timestamp) {
+      text = DateFormat('dd MMM yyyy HH:mm', 'es_ES').format(value.toDate());
+    } else if (value is List<String>) {
+      text = value.isEmpty ? 'Ninguno/a' : value.join(', ');
+    } else if (value is double) {
+      text = value.toStringAsFixed(2);
+    } else {
+      text = value.toString();
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4), // Espaciado vertical estándar
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            // width: 160, // Ancho fijo para la etiqueta
+            child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          const SizedBox(width: 8),
+          Expanded(child: Text(text)), // El valor toma el resto del espacio
+        ],
+      ),
     );
   }
 
@@ -1189,40 +1346,6 @@ class _PacienteDetailScreenState extends State<PacienteDetailScreen>
             ),
           ),
       ],
-    );
-  }
-
-  // Necesitarás mover o copiar _buildInfoRow aquí
-  Widget _buildInfoRow(String label, dynamic value) {
-    String text;
-    if (value == null || (value is String && value.isEmpty)) {
-      text = 'No especificado';
-    } else if (value is bool) {
-      text = value ? 'Sí' : 'No';
-    } else if (value is DateTime) {
-      text = DateFormat('dd MMM yyyy', 'es_ES').format(value);
-    } else if (value is Timestamp) {
-      text = DateFormat('dd MMM yyyy HH:mm', 'es_ES').format(value.toDate());
-    } else if (value is List<String>) {
-      text = value.isEmpty ? 'Ninguno/a' : value.join(', ');
-    } else if (value is double) {
-      text = value.toStringAsFixed(2);
-    } else {
-      text = value.toString();
-    }
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 160,
-            child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          const SizedBox(width: 8),
-          Expanded(child: Text(text)),
-        ],
-      ),
     );
   }
 }

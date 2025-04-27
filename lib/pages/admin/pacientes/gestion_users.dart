@@ -4,13 +4,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/modelos.dart'; // Importa tus modelos
-import '../../services/firestore_service.dart'; // Importa tu servicio
+import '../../../models/modelos.dart'; // Importa tus modelos
+import '../../../services/firestore_service.dart'; // Importa tu servicio
 
-import 'admin_management_tab.dart';
+import '../admin_management_tab.dart';
 import 'create_user_form.dart';
-import 'doctor_management_tab.dart';
-import 'pacientes/paciente_management_tab.dart';
+import '../doctor_management_tab.dart';
+import 'paciente_management_tab.dart';
 
 class UserManagementScreen extends StatefulWidget {
   const UserManagementScreen({super.key});

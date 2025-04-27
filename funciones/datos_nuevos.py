@@ -12,10 +12,11 @@ pesos_riesgo = {
     'rotura_uterina': 25,         # Col: WAOS_Rotura_uterina_durante_el_parto == 1
     'shock_hipotension_severa': 20,# Col: PAS_ESTANCIA_MIN < 70 O PAD_ESTANCIA_MIN < 40 (Shock profundo)
     'consciencia_no_alerta': 18,    # Col: CONSCIENCIA_INGRESO != 'Alerta' (o == 0 si es código)
-    'ingreso_uci': 15,              # Col: MANEJO_ESPECIFICO_Ingreso_a_UCI == 1
+    # 'ingreso_uci': 15,              # Col: MANEJO_ESPECIFICO_Ingreso_a_UCI == 1
     'transfusion_masiva': 12,       # Col: UNIDADES_TRANSFUNDIDAS >= 4
     'bradicardia_extrema': 12,      # Col: F_CARDIACA_ESTANCIA_MIN < 50 (Asumiendo la columna correcta para MIN)
     'falla_respiratoria_severa': 10,# Col: F_RESPIRATORIA_INGRESO_ALTA > 30 o < 10 (Usando ingreso como proxy)
+
     # 'hipoxemia_severa': 10,       # COLUMNA SaO2_ESTANCIA_MIN FALTANTE O NO FIABLE EN MUESTRA - Omitido por ahora
     'plaquetopenia_muy_severa': 12, # Col: Recuento_de_plaquetas_-_PLT___min < 50000
     'falla_renal_aguda_severa': 10, # Col: CREATININA_ESTANCIA_MAX > 2.0
@@ -142,9 +143,9 @@ def calcular_clasificar_riesgo_ponderado(row):
         if consciencia_str != 'alerta' and consciencia_str != '':
              puntuacion += pesos_riesgo['consciencia_no_alerta']
              debug_info.append('consciencia_no_alerta')
-        if ingreso_uci == 1:
-             puntuacion += pesos_riesgo['ingreso_uci']
-             debug_info.append('ingreso_uci')
+        # if ingreso_uci == 1:
+        #      puntuacion += pesos_riesgo['ingreso_uci']
+        #      debug_info.append('ingreso_uci')
         if not np.isnan(unidades_transfundidas) and unidades_transfundidas >= 4:
              puntuacion += pesos_riesgo['transfusion_masiva']
              debug_info.append('transf_masiva')

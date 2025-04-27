@@ -237,38 +237,48 @@ class Recomendacion {
 class Cita {
   final String? id;
   final String? titulo;
-  final String nombrePaciente; // Podría ser mejor guardar pacienteId
+  final String nombrePaciente;
   final DateTime fecha;
-  // --- NUEVOS CAMPOS SUGERIDOS ---
   final String? pacienteId;
   final String? doctorId;
+  // --- NUEVOS CAMPOS ---
+  final String? nombreDoctor; // Nombre del doctor para fácil visualización
+  final String? estado; // Ej: 'programada', 'completada', 'cancelada'
 
   Cita({
     this.id,
     this.titulo,
-    required this.nombrePaciente, // Mantener por compatibilidad o quitar
+    required this.nombrePaciente,
     required this.fecha,
-    this.pacienteId, // Añadir
-    this.doctorId, // Añadir
+    this.pacienteId,
+    this.doctorId,
+    // --- NUEVOS CAMPOS ---
+    this.nombreDoctor,
+    this.estado = 'programada', // Valor por defecto al crear
   });
 
-  // Método copyWith: Crea una nueva instancia de Cita copiando la actual,
-  // pero permitiendo reemplazar algunos de sus valores.
-  // Útil para crear objetos inmutables modificados.
-  Cita copiarCon({String? id, String? titulo, String? nombrePaciente, DateTime? fecha}) {
+  Cita copiarCon({
+    String? id,
+    String? titulo,
+    String? nombrePaciente,
+    DateTime? fecha,
+    String? pacienteId,
+    String? doctorId,
+    String? nombreDoctor, // Añadir
+    String? estado, // Añadir
+  }) {
     return Cita(
-      // Si el nuevo 'id' es nulo, usa el 'id' de la instancia actual ('this.id')
       id: id ?? this.id,
-      // Si el nuevo 'titulo' es nulo, usa el 'titulo' de la instancia actual
       titulo: titulo ?? this.titulo,
-      // Si el nuevo 'nombrePaciente' es nulo, usa el 'nombrePaciente' de la instancia actual
       nombrePaciente: nombrePaciente ?? this.nombrePaciente,
-      // Si la nueva 'fecha' es nula, usa la 'fecha' de la instancia actual
       fecha: fecha ?? this.fecha,
+      pacienteId: pacienteId ?? this.pacienteId,
+      doctorId: doctorId ?? this.doctorId,
+      nombreDoctor: nombreDoctor ?? this.nombreDoctor, // Añadir
+      estado: estado ?? this.estado, // Añadir
     );
   }
 
-  // --- fromJson Actualizado ---
   factory Cita.fromJson(Map<String, dynamic> json) {
     DateTime? parsedDate;
     if (json['fecha'] is Timestamp) {
@@ -277,57 +287,52 @@ class Cita {
       parsedDate = DateTime.tryParse(json['fecha']);
     }
 
-    if (json['nombrePaciente'] == null || parsedDate == null) {
-      throw FormatException("Los campos 'nombrePaciente' y 'fecha' (válida) son requeridos.");
+    // Requiere al menos pacienteId/nombrePaciente y fecha
+    if ((json['pacienteId'] == null && json['nombrePaciente'] == null) || parsedDate == null) {
+      throw FormatException(
+        "Los campos 'pacienteId' o 'nombrePaciente', y 'fecha' (válida) son requeridos.",
+      );
     }
 
     return Cita(
       id: json['id'] as String?,
       titulo: json['titulo'] as String?,
-      nombrePaciente: json['nombrePaciente'] as String,
+      nombrePaciente: json['nombrePaciente'] as String? ?? 'ID: ${json['pacienteId']}', // Fallback
       fecha: parsedDate,
-      // Parsear nuevos campos
       pacienteId: json['pacienteId'] as String?,
       doctorId: json['doctorId'] as String?,
+      // --- NUEVOS CAMPOS ---
+      nombreDoctor: json['nombreDoctor'] as String?,
+      estado: json['estado'] as String? ?? 'programada', // Default si falta
     );
   }
 
-  // --- toJson Actualizado ---
   Map<String, dynamic> toJson() {
     return {
-      // No incluir 'id' al crear/actualizar
+      // 'id' no se incluye al crear/actualizar
       'titulo': titulo,
-      'nombrePaciente': nombrePaciente, // Considera cambiar a pacienteId
-      'fecha': Timestamp.fromDate(fecha), // GUARDAR COMO TIMESTAMP
-      'pacienteId': pacienteId, // Guardar IDs
+      'nombrePaciente': nombrePaciente,
+      'fecha': Timestamp.fromDate(fecha),
+      'pacienteId': pacienteId,
       'doctorId': doctorId,
+      // --- NUEVOS CAMPOS ---
+      'nombreDoctor': nombreDoctor,
+      'estado': estado,
     };
   }
-
-  // --- Opcional: Métodos de igualdad y hashCode ---
-  // Es buena práctica sobreescribirlos si vas a comparar instancias
-  // o usarlas en colecciones como Set o Map.
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
-    return other is Cita &&
-        other.id == id &&
-        other.titulo == titulo &&
-        other.nombrePaciente == nombrePaciente &&
-        other.fecha == fecha;
+    return other is Cita && other.id == id; // Compara por ID
   }
 
   @override
-  int get hashCode {
-    return id.hashCode ^ titulo.hashCode ^ nombrePaciente.hashCode ^ fecha.hashCode;
-  }
+  int get hashCode => id.hashCode; // Usa hashCode del ID
 
-  // --- Opcional: Método toString para representación legible ---
   @override
   String toString() {
-    return 'Cita(id: $id, titulo: $titulo, nombrePaciente: $nombrePaciente, fecha: $fecha)';
+    return 'Cita(id: $id, titulo: $titulo, paciente: $nombrePaciente, fecha: $fecha, doctor: $nombreDoctor, estado: $estado)';
   }
 }
 

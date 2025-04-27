@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'appointment_management_screen.dart';
-import 'gestion_users.dart';
+import 'citas/appointment_management_screen.dart';
+import 'pacientes/gestion_users.dart';
 // Importa otras pantallas de gestión si las creas
 // import 'recommendation_management_screen.dart';
 
@@ -89,7 +89,7 @@ class AdminDashboardScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(icon, size: 50.0, color: Theme.of(context).primaryColor),
+            Icon(icon, size: 50.0),
             const SizedBox(height: 10.0),
             Text(
               title,
