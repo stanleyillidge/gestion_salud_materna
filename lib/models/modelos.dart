@@ -376,6 +376,7 @@ class Usuario {
   final String displayName;
   final String? photoUrl;
   final List<UserRole> roles;
+  final String? nivelRiesgo;
 
   /// Perfiles opcionales, sólo presentes si el usuario tiene ese rol activo.
   final AdminProfile? adminProfile;
@@ -392,6 +393,7 @@ class Usuario {
     required this.uid,
     required this.email,
     required this.displayName,
+    this.nivelRiesgo,
     this.photoUrl,
     required this.roles,
     this.adminProfile,
@@ -523,6 +525,7 @@ class Usuario {
       email: FirestoreParser.parseString(data['email']) ?? '', // Usa el parser
       displayName: FirestoreParser.parseString(data['displayName']) ?? 'Usuario sin nombre',
       photoUrl: FirestoreParser.parseString(data['photoUrl']), // El parser devuelve null si falla
+      nivelRiesgo: FirestoreParser.parseString(data['nivelRiesgo']),
       roles: roles,
       adminProfile: adminProfile,
       doctorProfile: doctorProfile,
@@ -543,6 +546,7 @@ class Usuario {
       'recomendacionesEmitidas': recomendacionesEmitidas?.map((r) => r.toJson()).toList(),
       'recomendacionesRecibidas': recomendacionesRecibidas?.map((r) => r.toJson()).toList(),
       'citas': citas?.map((c) => c.toJson()).toList(),
+      if (nivelRiesgo != null) 'nivelRiesgo': nivelRiesgo,
       // 'datosClinicos': datosClinicos?.map((d) => d.toMap()).toList(),
     };
     if (adminProfile != null) map['adminProfile'] = adminProfile!.toMap();

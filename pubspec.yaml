@@ -39,7 +39,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   table_calendar: null
-  google_sign_in: null
+  google_sign_in:  ^6.3.0
   flutter_facebook_auth: null
   cloud_firestore: null
   font_awesome_flutter: null

@@ -41,9 +41,11 @@ class TestDataLoader {
       await Future.delayed(const Duration(seconds: 1));
 
       // 3. Iterar sobre cada registro del JSON
-      // for (var jsonData in jsonDataList) {
-      for (var i = 0; i < 10; i++) {
-        final jsonData = jsonDataList[i];
+      for (var jsonData in jsonDataList) {
+        // List<int> numeros = [40, 85, 105, 124, 214, 215];
+        // for (int i in numeros) {
+        // for (var i = 0; i < 100; i++) {
+        // final jsonData = jsonDataList[i];
         if (jsonData is Map<String, dynamic>) {
           userCounter++;
           final String recordIdentifier =

@@ -14,7 +14,7 @@ import '../../services/users_service.dart'; // *** NUEVO: Importa UsersService *
 import '../auth/login.dart';
 import 'dashboard.dart'; // *** CORREGIDO: Importa Dashboard ***
 import 'doctores/doctor_management_screen.dart';
-import 'pacientes/gestion_users.dart';
+import 'gestion_users.dart';
 import 'notificaciones.dart';
 import 'pacientes/pacientes.dart';
 
@@ -45,7 +45,7 @@ class HomeAdminState extends State<HomeAdmin> {
   // --- Estados para acciones ---
   bool _isSeeding = false; // Estado para carga de datos
   bool _isDeletingUsers = false; // Estado para borrado masivo
-  bool _isDeletingFirestorePatients = false;
+  final bool _isDeletingFirestorePatients = false;
 
   // --- Instancias de servicios ---
   final FirestoreService _firestoreService = FirestoreService();
@@ -220,7 +220,7 @@ class HomeAdminState extends State<HomeAdmin> {
     // ¡¡ASEGÚRATE DE QUE ESTA LISTA SEA CORRECTA!!
     final List<String> uidsToKeepSafe =
         [
-              'Tmps8lzYD1aeVig4tXKCCUR2cXt1', // Ejemplo 1
+              // 'Tmps8lzYD1aeVig4tXKCCUR2cXt1', // Ejemplo 1
               'ELFNryTZY0hsTehf6APi8X7bHt42', // Ejemplo 2
               '9SzB2XG9ifaLcq6e6PHyWJvwfQE2', // Ejemplo 3
               'r5cHUx4oB7aWC2AYKtPGFNLxT2v1', // Ejemplo 4
@@ -259,7 +259,7 @@ class HomeAdminState extends State<HomeAdmin> {
       final resultx = await _functions.httpsCallable('manageAuthUser')({
         'action': 'bulkDeleteExcept',
         'excludedUIDs': [
-          'Tmps8lzYD1aeVig4tXKCCUR2cXt1', // Ejemplo 1
+          // 'Tmps8lzYD1aeVig4tXKCCUR2cXt1', // Ejemplo 1
           'ELFNryTZY0hsTehf6APi8X7bHt42', // Ejemplo 2
           '9SzB2XG9ifaLcq6e6PHyWJvwfQE2', // Ejemplo 3
           'r5cHUx4oB7aWC2AYKtPGFNLxT2v1', // Ejemplo 4
@@ -295,7 +295,7 @@ class HomeAdminState extends State<HomeAdmin> {
     }
   }
 
-  Future<void> _startFirestorePatientDelete() async {
+  /* Future<void> _startFirestorePatientDelete() async {
     if (_isDeletingFirestorePatients) return;
 
     // *** CONFIRMACIÓN EXPLÍCITA *** (MUY IMPORTANTE)
@@ -397,7 +397,7 @@ class HomeAdminState extends State<HomeAdmin> {
     } finally {
       if (mounted) setState(() => _isDeletingFirestorePatients = false);
     }
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -449,7 +449,7 @@ class HomeAdminState extends State<HomeAdmin> {
             onPressed:
                 _isDeletingUsers ? null : _startMassiveUserDelete, // Deshabilitar mientras borra
           ),
-          IconButton(
+          /* IconButton(
             icon:
                 _isDeletingFirestorePatients
                     ? const SizedBox(
@@ -466,7 +466,7 @@ class HomeAdminState extends State<HomeAdmin> {
                 _isDeletingFirestorePatients
                     ? null
                     : _startFirestorePatientDelete, // Llama a la nueva función
-          ),
+          ), */
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Cerrar Sesión',

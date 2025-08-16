@@ -10,8 +10,37 @@ class FirestoreService {
   // La Cloud Function ya no es necesaria para esta función específica
   final FirebaseFunctions _functions = FirebaseFunctions.instanceFor(region: 'us-central1');
   CollectionReference<Map<String, dynamic>> get _usersCollection => _db.collection('users');
-  CollectionReference<Map<String, dynamic>> get _pacientesCollection => _db.collection('pacientes');
+  // CollectionReference<Map<String, dynamic>> get _pacientesCollection => _db.collection('pacientes');
   // En FirestoreService
+
+  /// Actualiza únicamente el campo 'nivelRiesgo' del documento de un usuario.
+  Future<void> updatePacienteNivelRiesgo(String pacienteId, String nivelRiesgo) async {
+    if (pacienteId.isEmpty) {
+      throw ArgumentError("El pacienteId no puede estar vacío.");
+    }
+    // Validar nivel de riesgo si es necesario (opcional)
+    final validLevels = ['Crítico', 'Alto', 'Moderado', 'Bajo'];
+    if (!validLevels.contains(nivelRiesgo)) {
+      print("Advertencia: Se intentó guardar un nivel de riesgo no estándar: '$nivelRiesgo'");
+      // Podrías decidir lanzar un error o permitirlo
+      // throw ArgumentError("Nivel de riesgo '$nivelRiesgo' no es válido.");
+    }
+
+    try {
+      await _usersCollection.doc(pacienteId).update({
+        'nivelRiesgo': nivelRiesgo,
+        'lastRiskUpdate': FieldValue.serverTimestamp(), // Opcional: guardar cuándo se actualizó
+      });
+      print("Nivel de riesgo actualizado a '$nivelRiesgo' para usuario $pacienteId.");
+    } on FirebaseException catch (e) {
+      print("Error Firestore al actualizar nivelRiesgo para $pacienteId: ${e.code} - ${e.message}");
+      // Relanzar para que el llamador (callVertex) lo maneje si es necesario
+      throw Exception("Error Firestore: ${e.message}");
+    } catch (e) {
+      print("Error inesperado al actualizar nivelRiesgo para $pacienteId: $e");
+      throw Exception("Error inesperado: ${e.toString()}");
+    }
+  }
 
   // Helper para borrar subcolecciones (se mantiene igual)
   Future<int> _deleteSubcollectionBatch(String userId, String subcollectionName) async {
@@ -183,6 +212,28 @@ class FirestoreService {
                 );
                 firestoreErrorCount++;
               }
+              // 1.1 Borrar Subcolección 'ai_consultations'
+              try {
+                int deletedSubDocs = await _deleteSubcollectionBatch(userId, 'ai_consultations');
+                subDocsDeletedCount += deletedSubDocs;
+                // Añadir aquí borrado de otras subcolecciones si es necesario
+              } catch (e) {
+                print(
+                  "  -> ERROR borrando subcolección 'ai_consultations' para $userId: $e. Se continuará.",
+                );
+                firestoreErrorCount++;
+              }
+              // 1.2 Borrar Subcolección 'recomendations'
+              try {
+                int deletedSubDocs = await _deleteSubcollectionBatch(userId, 'recomendations');
+                subDocsDeletedCount += deletedSubDocs;
+                // Añadir aquí borrado de otras subcolecciones si es necesario
+              } catch (e) {
+                print(
+                  "  -> ERROR borrando subcolección 'recomendations' para $userId: $e. Se continuará.",
+                );
+                firestoreErrorCount++;
+              }
 
               // 2. Añadir Documento Principal al Batch de Firestore
               mainBatch.delete(doc.reference);
@@ -283,7 +334,7 @@ class FirestoreService {
     };
   }
 
-  // En FirestoreService
+  /* // En FirestoreService
 
   /// Borra los documentos de Firestore (colección 'users' y subcolección 'clinical_records')
   /// para todos los usuarios con el rol 'paciente', EXCEPTO los IDs en `uidsToKeep`.
@@ -420,7 +471,7 @@ class FirestoreService {
       'clinicalRecordsDeleted': clinicalRecordsDeletedCount,
       'errors': errorCount,
     };
-  }
+  } */
 
   // --- Resto de métodos del servicio (como getUserStream, addClinicalRecord, etc.) ---
   // ... (mantener los otros métodos que no están relacionados con el borrado masivo de Auth)

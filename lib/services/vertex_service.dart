@@ -655,6 +655,24 @@ class VertexAiClient {
       );
 
       if (kDebugMode) print('>>> Riesgo extraído final: $riesgo');
+      // *** PASO NUEVO: Actualizar Firestore ANTES de retornar ***
+      if (!riesgo.toLowerCase().contains('inválido') && !riesgo.toLowerCase().contains('error')) {
+        try {
+          print("  -> Actualizando nivelRiesgo en Firestore para $pacienteId a '$riesgo'");
+          await firestoreService.updatePacienteNivelRiesgo(pacienteId, riesgo);
+          print("  -> nivelRiesgo actualizado exitosamente.");
+        } catch (e) {
+          // Log del error pero no fallar la función principal por esto
+          print(
+            "  -> ADVERTENCIA: Falló la actualización de nivelRiesgo en Firestore para $pacienteId: $e",
+          );
+          // Podrías guardar este fallo en algún log de errores pendientes si es crítico
+        }
+      } else {
+        print(
+          "  -> No se actualizará nivelRiesgo en Firestore debido a respuesta inválida/error: $riesgo",
+        );
+      }
       return riesgo;
     } on auth.ServerRequestFailedException catch (e) {
       print("Error Auth Vertex: ${e.message}");

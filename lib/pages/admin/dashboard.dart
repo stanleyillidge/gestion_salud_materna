@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'citas/appointment_management_screen.dart';
-import 'pacientes/gestion_users.dart';
+import 'gestion_users.dart';
 // Importa otras pantallas de gestión si las creas
 // import 'recommendation_management_screen.dart';
 

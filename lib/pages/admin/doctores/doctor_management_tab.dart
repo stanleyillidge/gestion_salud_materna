@@ -3,8 +3,9 @@
 
 import 'package:flutter/material.dart';
 
-import '../../models/modelos.dart'; // Asegúrate que la ruta sea correcta
-import '../../services/firestore_service.dart'; // Asegúrate que la ruta sea correcta
+import '../../../models/modelos.dart'; // Asegúrate que la ruta sea correcta
+import '../../../services/firestore_service.dart';
+import 'doctor_profile_screen.dart'; // Asegúrate que la ruta sea correcta
 // import 'doctor_detail_screen.dart'; // Pantalla de detalle si la tienes
 
 class DoctorManagementTab extends StatefulWidget {
@@ -141,9 +142,13 @@ class _DoctorManagementTabState extends State<DoctorManagementTab> {
               icon: const Icon(Icons.visibility, color: Colors.blue),
               tooltip: 'Ver Detalles del Doctor',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Pantalla de detalle del doctor no implementada.')),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => DoctorProfileScreen(uidDoctor: user.uid)),
                 );
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   const SnackBar(content: Text('Pantalla de detalle del doctor no implementada.')),
+                // );
               },
             ),
             if (isSuperAdmin) // Usa la variable pasada
@@ -155,9 +160,13 @@ class _DoctorManagementTabState extends State<DoctorManagementTab> {
           ],
         ),
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Pantalla de detalle del doctor no implementada.')),
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => DoctorProfileScreen(uidDoctor: user.uid)),
           );
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   const SnackBar(content: Text('Pantalla de detalle del doctor no implementada.')),
+          // );
         },
       ),
     );
@@ -171,9 +180,13 @@ class _DoctorManagementTabState extends State<DoctorManagementTab> {
       margin: const EdgeInsets.all(4.0),
       child: InkWell(
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Pantalla de detalle del doctor no implementada.')),
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => DoctorProfileScreen(uidDoctor: user.uid)),
           );
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   const SnackBar(content: Text('Pantalla de detalle del doctor no implementada.')),
+          // );
         },
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -223,18 +236,6 @@ class _DoctorManagementTabState extends State<DoctorManagementTab> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.visibility_outlined, size: 20),
-                    color: Colors.blue,
-                    tooltip: 'Ver Detalles',
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Pantalla de detalle del doctor no implementada.'),
-                        ),
-                      );
-                    },
-                  ),
                   if (isSuperAdmin) // Usa la variable pasada
                     IconButton(
                       icon: const Icon(Icons.delete_outline, size: 20),

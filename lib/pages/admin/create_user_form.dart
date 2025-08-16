@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import '../../../models/modelos.dart'; // Importa tus modelos
-import '../../../services/users_service.dart';
+import '../../models/modelos.dart'; // Importa tus modelos
+import '../../services/users_service.dart';
 
 /// Calcula el ancho adecuado para los campos de formulario basado en el ancho de la pantalla.
 ///

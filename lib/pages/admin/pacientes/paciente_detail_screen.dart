@@ -10,7 +10,7 @@ import '../../../models/modelos.dart';
 import '../../../services/firestore_service.dart';
 import '../../../services/vertex_service.dart'; // Asume que este servicio ahora existe
 // Importa las vistas y formularios necesarios
-import 'create_user_form.dart';
+import '../create_user_form.dart';
 import 'historia clinica/gestion_historia_clinica_view.dart';
 import 'historia clinica/gestion_historia_clinica_form.dart';
 import 'recomendaciones_screen.dart'; // Asegúrate que esta pantalla exista
@@ -774,7 +774,7 @@ class _PacienteDetailScreenState extends State<PacienteDetailScreen>
                 child: ListTile(
                   dense: true, // Hace el ListTile más compacto
                   title: Text(
-                    consulta.nivelRiesgo,
+                    (consulta.nivelRiesgo == 'Moderado') ? 'Intermedio' : consulta.nivelRiesgo,
                     style: TextStyle(
                       fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                       fontSize: 16,
@@ -886,7 +886,7 @@ class _PacienteDetailScreenState extends State<PacienteDetailScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              consulta.nivelRiesgo,
+              (consulta.nivelRiesgo == 'Moderado') ? 'Intermedio' : consulta.nivelRiesgo,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
@@ -945,7 +945,9 @@ class _PacienteDetailScreenState extends State<PacienteDetailScreen>
             content: SingleChildScrollView(
               child: ListBody(
                 children: [
-                  SelectableText("Nivel Riesgo: ${consulta.nivelRiesgo}\n"),
+                  SelectableText(
+                    "Nivel Riesgo: ${(consulta.nivelRiesgo == 'Moderado') ? 'Intermedio' : consulta.nivelRiesgo}\n",
+                  ),
                   SelectableText("Input Enviado:\n${consulta.inputDetails}\n"),
                   SelectableText("Versión del Modelo:\n${consulta.modelVersion}"),
                 ],
