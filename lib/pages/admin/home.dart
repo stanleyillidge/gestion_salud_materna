@@ -225,6 +225,7 @@ class HomeAdminState extends State<HomeAdmin> {
               '9SzB2XG9ifaLcq6e6PHyWJvwfQE2', // Ejemplo 3
               'r5cHUx4oB7aWC2AYKtPGFNLxT2v1', // Ejemplo 4
               '7VhgBZuYubVxSbSydhzmgO1D3SQ2',
+              'PgragKe4FQPld28MFY82mKi0Fyi2',
               _auth.currentUser?.uid ?? 'NO_CURRENT_USER_ID', // Añadir el UID del admin actual
               // Añade más UIDs esenciales aquí
             ]
@@ -264,6 +265,7 @@ class HomeAdminState extends State<HomeAdmin> {
           '9SzB2XG9ifaLcq6e6PHyWJvwfQE2', // Ejemplo 3
           'r5cHUx4oB7aWC2AYKtPGFNLxT2v1', // Ejemplo 4
           '7VhgBZuYubVxSbSydhzmgO1D3SQ2',
+          'PgragKe4FQPld28MFY82mKi0Fyi2',
           _auth.currentUser?.uid ?? 'NO_CURRENT_USER_ID', // Añadir el UID del admin actual
         ],
       });

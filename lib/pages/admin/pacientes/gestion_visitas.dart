@@ -72,14 +72,8 @@ class GestionVisitasState extends State<GestionVisitas> {
             ),
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: _addVisit,
-              child: const Text('Registrar'),
-            ),
+            TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancelar')),
+            TextButton(onPressed: _addVisit, child: const Text('Registrar')),
           ],
         );
       },
@@ -93,9 +87,7 @@ class GestionVisitasState extends State<GestionVisitas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gestión de Visitas'),
-      ),
+      appBar: AppBar(title: const Text('Gestión de Visitas')),
       body: Column(
         children: [
           TableCalendar(
@@ -133,7 +125,5 @@ class GestionVisitasState extends State<GestionVisitas> {
 }
 
 void main() {
-  runApp(const MaterialApp(
-    home: GestionVisitas(),
-  ));
+  runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: GestionVisitas()));
 }

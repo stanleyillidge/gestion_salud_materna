@@ -196,6 +196,7 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                         (_) => ChangeNotifierProvider(
                                           create: (_) => AppointmentProvider(),
                                           child: MaterialApp(
+                                            debugShowCheckedModeBanner: false,
                                             title: 'Gestor de Citas Médicas',
                                             home: value,
                                           ),
@@ -257,7 +258,11 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               builder:
                   (_) => ChangeNotifierProvider(
                     create: (_) => AppointmentProvider(),
-                    child: MaterialApp(title: 'Gestor de Citas Médicas', home: value),
+                    child: MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      title: 'Gestor de Citas Médicas',
+                      home: value,
+                    ),
                   ),
             ),
           );
@@ -278,7 +283,11 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               builder:
                   (_) => ChangeNotifierProvider(
                     create: (_) => AppointmentProvider(),
-                    child: MaterialApp(title: 'Gestor de Citas Médicas', home: value),
+                    child: MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      title: 'Gestor de Citas Médicas',
+                      home: value,
+                    ),
                   ),
             ),
           );
@@ -368,6 +377,7 @@ class LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     );
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: brightness == Brightness.light ? theme.light() : theme.dark(),
       home: Scaffold(body: LoginAdaptativo(imagen: imagen, botones: botones)),
     );

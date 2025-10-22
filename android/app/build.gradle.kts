@@ -41,7 +41,7 @@ android {
         applicationId = "saeji.dev.gestion_salud_materna"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23 //flutter.minSdkVersion
+        minSdk = flutter.minSdkVersion //flutter.minSdkVersion
         targetSdk = 36 //flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName

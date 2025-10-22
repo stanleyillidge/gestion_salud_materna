@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false, // Quitar banner debug
       supportedLocales: const [Locale('es')],
       theme: brightness == Brightness.light ? theme.light() : theme.dark(),
       home: const AuthWrapper(),
